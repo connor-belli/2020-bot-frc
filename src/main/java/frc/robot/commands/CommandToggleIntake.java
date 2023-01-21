@@ -15,9 +15,9 @@ public class CommandToggleIntake extends InstantCommand {
     super(() -> {
       intakeSubsystem.toggleIntake();
       if (!intakeSubsystem.getIntake()) {
-        intakeSubsystem.runIntake(1);
+        //intakeSubsystem.runIntake(1);
       } else {
-        intakeSubsystem.runIntake(0);
+        //intakeSubsystem.runIntake(0);
       }
     }, intakeSubsystem);
   }

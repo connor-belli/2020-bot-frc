@@ -9,6 +9,7 @@ package frc.robot.commands.autos;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.base.CommandDriveDistance;
+import frc.robot.commands.base.CommandRunTime;
 // import frc.robot.commands.base.CommandTurnPID;
 import frc.robot.subsystems.*;
 
@@ -24,11 +25,13 @@ public class AutoShootInitLine extends SequentialCommandGroup {
                            ShooterHoodSubsystem shooterHoodSubsystem,
                            ShooterTurretSubsystem shooterTurretSubsystem,
                            IndexWheelSubsystem indexWheelSubsystem,
+                           IntakeSubsystem intakeSubsystem,
                            LimeLightSubsystem limeLightSubsystem) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    super(new CommandDriveDistance(baseSubsystem, 5),
+    super(
             // new CommandTurnPID(baseSubsystem, 180),
-            new AutoShoot(shooterSubsystem, shooterHoodSubsystem, shooterTurretSubsystem, indexWheelSubsystem, limeLightSubsystem, 3));
+            new AutoShoot(shooterSubsystem, shooterHoodSubsystem, shooterTurretSubsystem, indexWheelSubsystem, intakeSubsystem, limeLightSubsystem, 3),
+            new CommandRunTime(baseSubsystem, 0.3));
   }
 }

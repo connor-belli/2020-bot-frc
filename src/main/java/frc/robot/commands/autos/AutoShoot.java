@@ -7,7 +7,11 @@
 
 package frc.robot.commands.autos;
 
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.CommandDoNothing;
+import frc.robot.commands.CommandToggleIntake;
+import frc.robot.commands.hood.CommandAutoAimHood;
 import frc.robot.commands.shooter.CommandShootAll;
 import frc.robot.commands.shooter.CommandStartShooter;
 import frc.robot.commands.shooter.CommandStopShooter;
@@ -25,10 +29,14 @@ public class AutoShoot extends SequentialCommandGroup {
                    ShooterHoodSubsystem shooterHoodSubsystem,
                    ShooterTurretSubsystem shooterTurretSubsystem,
                    IndexWheelSubsystem indexWheelSubsystem,
+                   IntakeSubsystem intakeSubsystem,
                    LimeLightSubsystem limeLightSubsystem, int shots) {
-    super(new CommandAimTurret(shooterTurretSubsystem, limeLightSubsystem),
+    super(  new CommandToggleIntake(intakeSubsystem),
             new CommandStartShooter(shooterSubsystem),
+            new CommandAimTurret(shooterTurretSubsystem, limeLightSubsystem).withTimeout(2),
+            new CommandAutoAimHood(shooterHoodSubsystem, limeLightSubsystem).withTimeout(3),
             new CommandShootAll(indexWheelSubsystem, shooterSubsystem, shots),
-            new CommandStopShooter(shooterSubsystem));
+            new CommandStopShooter(shooterSubsystem),
+            new CommandToggleIntake(intakeSubsystem));
   }
 }

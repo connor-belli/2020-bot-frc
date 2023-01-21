@@ -13,7 +13,9 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Util;
 import frc.robot.subsystems.BaseSubsystem;
 
 import static frc.robot.PracticeConstants.*;
@@ -22,6 +24,7 @@ public class PracticeBaseSubsystem extends BaseSubsystem {
   private final CANSparkMax motorLeft1, motorLeft2;
   private final CANSparkMax motorRight1, motorRight2;
   private final DoubleSolenoid solShift;
+
 
   public PracticeBaseSubsystem() {
     this(new CANSparkMax(kMotorBaseL1, MotorType.kBrushless), new CANSparkMax(kMotorBaseR1, MotorType.kBrushless));
@@ -49,6 +52,12 @@ public class PracticeBaseSubsystem extends BaseSubsystem {
     motor.setIdleMode(IdleMode.kBrake);
   }
 
+  @Override
+  public void arcadeDrive(double speed, double rotation) {
+    double rotMult = Util.clamp((Math.abs(speed)*0.5 + 0.6), 0, 1);
+    rotation = 0.5*rotation*(Math.abs(rotation) + 1);
+    super.arcadeDrive(speed, rotation*rotMult);
+  }
 
   @Override
   public void periodic() {
@@ -86,6 +95,15 @@ public class PracticeBaseSubsystem extends BaseSubsystem {
   @Override
   public void toggleShift() {
     if (solShift.get() == Value.kForward) {
+      solShift.set(Value.kReverse);
+    } else {
+      solShift.set(Value.kForward);
+    }
+  }
+
+  @Override
+  public void setShift(boolean x) {
+    if (x) {
       solShift.set(Value.kReverse);
     } else {
       solShift.set(Value.kForward);

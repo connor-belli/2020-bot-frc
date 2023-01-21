@@ -8,6 +8,8 @@
 package frc.robot;
 
 import com.revrobotics.ColorMatch;
+
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.util.Color;
 
 /**
@@ -45,8 +47,8 @@ public class Constants {
     public final static int kShooterLimitBottom = 4;
     public final static int kClimberLimit = 5;
 
-    public final static double kTurretLeftLimitAngle = -30;
-    public final static double kTurretRightLimitAngle = 30;
+    public final static double kTurretLeftLimitAngle = -70;
+    public final static double kTurretRightLimitAngle = 70;
     public final static double kShooterBottomLimitAngle = 59;
     public final static double kShooterTopLimitAngle = 10;
 
@@ -76,10 +78,10 @@ public class Constants {
     public final static double kTurretD = 0.0;
     public final static double kTurretF = 0.0;
 
-    public final static double kShooterP = 3.0;
+    public final static double kShooterP = 0.0;
     public final static double kShooterI = 0.0;
     public final static double kShooterD = 0.0;
-    public final static double kShooterF = 0.04995;
+    public final static double kShooterF = 0.042;
 
     public final static double kShooterHoodP = 4.0;
     public final static double kShooterHoodI = 0.0;
@@ -94,11 +96,31 @@ public class Constants {
 
     public final static double kShooterTopSpeed = 6000;//some number to be determined
     public final static double kShooterTopVelocity = 34;
-    public final static double kQuadInc = 0.01;
+    public final static double kQuadInc = 0.04;
     public final static double kTargetHeight = 89.5;
     public final static double kLimeLightHeight = 21.15;
-    public final static double kLimeLightAngle = 11.;
+    public final static double kLimeLightAngle = 30;
 
     public final static double kHoodA = -0.025;
     public final static double kHoodB = 26;
+    public final static double kPressureA = 120/2200;
+    public final static double kPressureB = 0;
+    public final static boolean usingHighGear = false;
+    public final static double kBaseS = usingHighGear?1.5:0.5;
+    public final static double kBaseV = usingHighGear?.5:3.34;
+    public final static double kBaseA = usingHighGear?0.213:0.282;
+
+    public final static double kBasePV = usingHighGear?1.0:1.71;//0.109;
+    public final static double kBaseW = 0.62614;
+
+    public final static double kBaseMaxAcc = 1;
+    public final static double kBaseMaxSpeed = 0.2;
+
+    public static final double kRamseteB = 2;
+    public static final double kRamseteZ = 0.7;
+    public static final DifferentialDriveKinematics kBaseKinematics = new DifferentialDriveKinematics(kBaseW);
+
+    public static final double kPolyA = 0;
+    public static final double kPolyB = 0;
+    public static final double kPolyC = 0;
 }

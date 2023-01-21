@@ -22,10 +22,6 @@ import frc.robot.commands.autos.AutoEnemyTrenchRun;
 import frc.robot.commands.autos.AutoShootInitLine;
 import frc.robot.commands.autos.AutoTrenchRunAlliance;
 import frc.robot.commands.base.*;
-import frc.robot.commands.climber.CommandExtendClimber;
-import frc.robot.commands.climber.CommandRetractClimber;
-import frc.robot.commands.climber.CommandRunClimberMotor;
-import frc.robot.commands.climber.CommandToggleClimber;
 import frc.robot.commands.hood.CommandAutoAimHood;
 import frc.robot.commands.hood.CommandHoodToPos;
 import frc.robot.commands.hood.CommandRunShooterHood;
@@ -49,8 +45,8 @@ import static frc.robot.Constants.kShooterBottomLimitAngle;
  */
 public class RobotContainer {
   private final BaseSubsystem m_baseSubsystem;
-  private final ClimberSubsystem m_climberSubsystem;
-  private final ControlPanelSubsystem m_controlPanelSubsystem;
+  //private final ClimberSubsystem m_climberSubsystem;
+  //private final ControlPanelSubsystem m_controlPanelSubsystem;
   private final IndexWheelSubsystem m_indexWheelSubsystem;
   private final IntakeSubsystem m_intakeSubsystem;
   private final LimeLightSubsystem m_limeLightSubsystem;
@@ -81,7 +77,7 @@ public class RobotContainer {
   private final JoystickButton m_operator_start = new JoystickButton(m_operator.controller, XboxController.Button.kStart.value);
 
   private final POVButton m_operator_up = new POVButton(m_operator.controller, 0);
-  private final POVButton m_operator_right = new POVButton(m_operator.controller, 180);
+  private final POVButton m_operator_right = new POVButton(m_operator.controller, 90);
   private final POVButton m_operator_down = new POVButton(m_operator.controller, 180);
 
   /**
@@ -94,8 +90,8 @@ public class RobotContainer {
     if (isComp) {
       m_baseSubsystem = new CompBaseSubsystem();
       m_intakeSubsystem = new CompIntakeSubsystem();
-      m_controlPanelSubsystem = new ControlPanelSubsystem();
-      m_climberSubsystem = new ClimberSubsystem();
+      //m_controlPanelSubsystem = new ControlPanelSubsystem();
+      //m_climberSubsystem = null; //new ClimberSubsystem();
       m_shooterHoodSubsystem = new ShooterHoodSubsystem();
       m_limeLightSubsystem = new LimeLightSubsystem();
       m_shooterSubsystem = new ShooterSubsystem();
@@ -103,8 +99,8 @@ public class RobotContainer {
     } else {
       m_baseSubsystem = new PracticeBaseSubsystem();
       m_intakeSubsystem = new PracticeIntakeSubsystem();
-      m_climberSubsystem = null;
-      m_controlPanelSubsystem = null;
+      //m_climberSubsystem = null;
+      //m_controlPanelSubsystem = null;
       m_shooterHoodSubsystem = null;
       m_limeLightSubsystem = null;
       m_shooterSubsystem = null;
@@ -113,12 +109,11 @@ public class RobotContainer {
     m_indexWheelSubsystem = new IndexWheelSubsystem();
 
     m_baseSubsystem.setDefaultCommand(new CommandRunBase(m_baseSubsystem, m_driver));
-    // m_climberSubsystem.setDefaultCommand(new CommandRaiseClimberHook(m_climberSubsystem, m_driver));
-    m_indexWheelSubsystem.setDefaultCommand(new CommandRunConveyor(m_indexWheelSubsystem, m_operator));
+    m_indexWheelSubsystem.setDefaultCommand(new CommandRunConveyor(m_indexWheelSubsystem, m_operator, m_shooterSubsystem));
     if (isComp) {
       m_shooterTurretSubsystem.setDefaultCommand(new CommandRunTurret(m_shooterTurretSubsystem, m_operator));
       m_shooterHoodSubsystem.setDefaultCommand(new CommandRunShooterHood(m_shooterHoodSubsystem, m_operator));
-      m_climberSubsystem.setDefaultCommand(new CommandRunClimberMotor(m_climberSubsystem, m_driver));
+      //m_climberSubsystem.setDefaultCommand(new CommandRunClimberMotor(m_climberSubsystem, m_driver));
     }
 
     // Configure the button bindings
@@ -134,23 +129,23 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     if (isComp) {
-      //m_driver_a.whileHeld(new CommandRunClimberMotor(m_climberSubsystem));
       m_driver_x.whenPressed(new CommandToggleVision(m_limeLightSubsystem));
-      //m_driver_y.whileHeld(new CommandAlignToTarget(m_baseSubsystem, m_limeLightSubsystem, m_driver), true);
-      m_driver_lb.whenPressed(new CommandToggleClimber(m_climberSubsystem));
-      m_driver_b.whenPressed(new InstantCommand(() -> m_intakeSubsystem.setIntake(false), m_intakeSubsystem));
+      //m_driver_rb.whenPressed(new CommandToggleRecord(m_baseSubsystem));
+      //m_driver_y.whenPressed(new CommandPlayRecording(m_baseSubsystem));
+      //m_driver_lb.whenPressed(new CommandToggleClimber(m_climberSubsystem));
+      //m_driver_rb.whenPressed(new InstantCommand(() -> m_intakeSubsystem.setIntake(false), m_intakeSubsystem));
+      //m_driver_a.whileHeld(new CommandAlignToTarget(m_baseSubsystem, m_limeLightSubsystem, m_driver));
       m_driver_start.whenPressed(new CommandTogglePrecision(m_baseSubsystem));
 
 
       m_operator_a.whileHeld(new ParallelCommandGroup(new CommandAutoAimHood(m_shooterHoodSubsystem, m_limeLightSubsystem), new CommandAimTurret(m_shooterTurretSubsystem, m_limeLightSubsystem)));
-      //m_operator_b.whileHeld(new CommandTestControlPanel(m_controlPanelSubsystem));
       m_operator_x.whileHeld(new CommandIntakeForward(m_intakeSubsystem));
       m_operator_b.whileHeld(new CommandIntakeReverse(m_intakeSubsystem));
       m_operator_lb.whenPressed(new CommandToggleIntakeNoMotor(m_intakeSubsystem));
       m_operator_rb.whenPressed(new CommandToggleShooter(m_shooterSubsystem));
-      m_operator_start.whileHeld(new CommandRunControlPanel(m_controlPanelSubsystem));
-      m_operator_back.whenPressed(new CommandRaiseControlSpinner(m_controlPanelSubsystem));
-      m_operator_up.whenPressed(new CommandHoodToPos(m_shooterHoodSubsystem, 18.5));
+      m_operator_start.whenPressed(new InstantCommand(() -> System.out.println("(" + m_limeLightSubsystem.getYAngle() + ", " + m_shooterHoodSubsystem.getTargetAngle() + ")")));
+      m_operator_up.whenPressed(new CommandHoodToPos(m_shooterHoodSubsystem, 40));
+      m_operator_right.whenPressed(new CommandHoodToPos(m_shooterHoodSubsystem, 30));
       m_operator_down.whenPressed(new CommandHoodToPos(m_shooterHoodSubsystem, kShooterBottomLimitAngle));
     } else {
       m_driver_lb.whenPressed(new CommandToggleDriveStyle(m_baseSubsystem));
@@ -161,10 +156,16 @@ public class RobotContainer {
 
   private void initAutoChooser() {
     autoChooser = new SendableChooser<>();
-    autoChooser.addOption("Enemy Trench Run", new AutoEnemyTrenchRun(m_baseSubsystem, m_shooterSubsystem, m_shooterHoodSubsystem, m_shooterTurretSubsystem, m_indexWheelSubsystem, m_limeLightSubsystem, m_intakeSubsystem));
-    autoChooser.addOption("Alliance Trench Run", new AutoTrenchRunAlliance(m_baseSubsystem, m_shooterSubsystem, m_shooterHoodSubsystem, m_shooterTurretSubsystem, m_indexWheelSubsystem, m_limeLightSubsystem, m_intakeSubsystem));
-    autoChooser.addOption("Shoot Init Line", new AutoShootInitLine(m_baseSubsystem, m_shooterSubsystem, m_shooterHoodSubsystem, m_shooterTurretSubsystem, m_indexWheelSubsystem, m_limeLightSubsystem));
-    autoChooser.addOption("Drive Forward", new CommandDriveDistance(m_baseSubsystem, 5));
+    if(isComp) {
+      autoChooser.addOption("Enemy Trench Run", new AutoEnemyTrenchRun(m_baseSubsystem, m_shooterSubsystem, m_shooterHoodSubsystem, m_shooterTurretSubsystem, m_indexWheelSubsystem, m_limeLightSubsystem, m_intakeSubsystem));
+      autoChooser.addOption("Alliance Trench Run", new AutoTrenchRunAlliance(m_baseSubsystem, m_shooterSubsystem, m_shooterHoodSubsystem, m_shooterTurretSubsystem, m_indexWheelSubsystem, m_limeLightSubsystem, m_intakeSubsystem));
+      autoChooser.addOption("Shoot Init Line", new AutoShootInitLine(m_baseSubsystem, m_shooterSubsystem, m_shooterHoodSubsystem, m_shooterTurretSubsystem, m_indexWheelSubsystem, m_intakeSubsystem, m_limeLightSubsystem));
+      autoChooser.addOption("Drive Forward", new CommandDriveDistance(m_baseSubsystem, 5));
+      autoChooser.addOption("Barrel", m_baseSubsystem.getBarrelCommand2());
+      autoChooser.addOption("shallots", m_baseSubsystem.getShallomCommand());
+      autoChooser.addOption("Bounce", m_baseSubsystem.getTrajectoryCommand("bounce.wpilib.json"));
+      autoChooser.addOption("RedB", m_baseSubsystem.getRedB(m_intakeSubsystem));
+    }
     SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 

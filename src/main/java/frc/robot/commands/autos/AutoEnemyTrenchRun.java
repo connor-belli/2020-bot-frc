@@ -29,7 +29,7 @@ public class AutoEnemyTrenchRun extends SequentialCommandGroup {
                             IntakeSubsystem intakeSubsystem) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    super(new AutoShoot(shooterSubsystem, shooterHoodSubsystem, shooterTurretSubsystem, indexWheelSubsystem, limeLightSubsystem, 3),
+    super(new AutoShoot(shooterSubsystem, shooterHoodSubsystem, shooterTurretSubsystem, indexWheelSubsystem, intakeSubsystem, limeLightSubsystem, 3),
             new CommandDriveDistance(baseSubsystem, -4),
             // new CommandTurnPID(baseSubsystem, -90),
             new CommandDriveDistance(baseSubsystem, 4),

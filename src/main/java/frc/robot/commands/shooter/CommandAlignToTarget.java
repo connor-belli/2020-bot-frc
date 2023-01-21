@@ -41,7 +41,7 @@ public class CommandAlignToTarget extends CommandBase {
   @Override
   public void execute() {
     double speed = Math.tanh(-m_limeLightSubsystem.getXAngle() / 25);
-    m_baseSubsystem.arcadeDrive(m_controller.getLeftY(), Math.signum(speed) * 0.1 + speed);
+    m_baseSubsystem.arcadeDrive(-m_controller.getLeftY(), Math.signum(speed) * 0.1 + speed);
   }
 
   // Called once the command ends or is interrupted.
@@ -54,6 +54,6 @@ public class CommandAlignToTarget extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(m_limeLightSubsystem.getXAngle()) < 0.5;
+    return false;//Math.abs(m_limeLightSubsystem.getXAngle()) < 0.5;
   }
 }

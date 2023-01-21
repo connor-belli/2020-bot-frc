@@ -105,7 +105,6 @@ public class ProjectileMath {
     public static double minDist(double th_0, double v_0, double k, double g, double xt, double yt, double inc) {
         // Analytical approximation is only accurate when y = 0 or small changes in theta so use approximations as steps for quadrature
         double th_min = 0;
-        double dist_min = 9999999;
         double x = 0;
         double y = 0;
         for (double i = th_0; i > -PI / 2 + inc; i -= inc) {
@@ -164,5 +163,10 @@ public class ProjectileMath {
 
   public static double getAngle(double xt) {
     return kHoodA * xt + kHoodB;
+  }
+
+  public static double polynomialInterpolation(double d1) {
+    double d2 = d1*d1;
+    return d2*kPolyA + d1*kPolyB + kPolyC;
   }
 }

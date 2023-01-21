@@ -20,28 +20,33 @@ public class CommandAutoAimHood extends CommandBase {
 
   @Override
   public void initialize() {
-
+    m_limeLightSubsystem.useVision(true);
   }
 
-  private boolean useLinearFormula = false;
+  private boolean useLinearFormula = true;
   @Override
   public void execute() {
-    if (useLinearFormula) {
-      double distance = m_limeLightSubsystem.estimateDistanceAlt() / 0.0254;
-      double height = (kTargetHeight - kLimeLightHeight) / 0.0254;
-      double[] params = ProjectileMath.getOptimumParams(distance, height);
-      SmartDashboard.putNumber("Error squared", ProjectileMath.minDist(params[0], params[1], kProjectileConstant, kGravity, distance, height, 0.01));
-      SmartDashboard.putNumber("Estimated angle", Math.toDegrees(params[0]));
-      m_shooterHoodSubsystem.setTargetAngle(Math.toDegrees(params[0]));
+    double distance = m_limeLightSubsystem.estimateDistanceAlt();
+    if(useLinearFormula) {
+      try {
+        double x = distance*-13.719 + 44.681;
+        if (useLinearFormula) {
+          m_shooterHoodSubsystem.setTargetAngle(x);
+        }
+      } catch(Exception e) {
+        
+
+      }
     } else {
-      double distance = m_limeLightSubsystem.estimateDistanceAlt();
-      m_shooterHoodSubsystem.setTargetAngle(ProjectileMath.getAngle(distance));
+      distance = distance / 0.0254;
+      m_shooterHoodSubsystem.setTargetAngle(ProjectileMath.getAngle(distance) - 6.0);
     }
   }
 
   @Override
   public void end(boolean interrupted) {
     //m_shooterHoodSubsystem.setTargetAngle(kShooterBottomLimitAngle);
+    m_limeLightSubsystem.useVision(false);
   }
 
   @Override

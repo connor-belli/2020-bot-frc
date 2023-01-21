@@ -36,6 +36,7 @@ public class IndexWheelSubsystem extends SubsystemBase {
 
   public void runHopper(double speed) {
     motorHopperWheel.set(speed);
+    
   }
 
   @Override
@@ -44,6 +45,7 @@ public class IndexWheelSubsystem extends SubsystemBase {
   }
 
   public void log() {
-    SmartDashboard.putBoolean("Intake - HopperWheel Motor", motorHopperWheel.get() != 0.0);
+    SmartDashboard.putBoolean("Intake - HopperWheel Motor", motorHopperWheel.get() > 0.0);
+    SmartDashboard.putNumber("Intake - HopperWheel Speed", motorHopperWheel.get());
   }
 }

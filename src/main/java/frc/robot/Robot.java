@@ -11,10 +11,12 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import static frc.robot.Constants.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -33,16 +35,19 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
+
   @Override
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_comp = new Compressor();
     m_comp.setClosedLoopControl(true);
+    //m_comp.stop();
     m_pressure = new AnalogInput(0);
     m_robotContainer = new RobotContainer();
-    CameraServer.getInstance().startAutomaticCapture();
-    CameraServer.getInstance().getServer().getSource().setResolution(320, 240);
+    LiveWindow.setEnabled(false);
+    //CameraServer.getInstance().startAutomaticCapture();
+    //CameraServer.getInstance().getServer().getSource().setResolution(320, 240);
   }
 
   /**
@@ -126,6 +131,7 @@ public class Robot extends TimedRobot {
   }
 
   public void log() {
-    SmartDashboard.putNumber("pressure", m_pressure.getValue());
+    SmartDashboard.putNumber("pressure", kPressureA*m_pressure.getValue() + kPressureB);
+    SmartDashboard.putBoolean("pressure switch", m_comp.getPressureSwitchValue());
   }
 }

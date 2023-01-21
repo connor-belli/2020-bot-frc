@@ -10,17 +10,20 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Xbox;
 import frc.robot.subsystems.IndexWheelSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 public class CommandRunConveyor extends CommandBase {
   /**
    * Creates a new CommandRunConveyor.
    */
   private final IndexWheelSubsystem m_indexWheelSubsystem;
+  private final ShooterSubsystem m_shooterSubsystem;
   private final Xbox m_controller;
 
-  public CommandRunConveyor(IndexWheelSubsystem indexWheelSubsystem, Xbox controller) {
+  public CommandRunConveyor(IndexWheelSubsystem indexWheelSubsystem, Xbox controller, ShooterSubsystem shooter) {
     m_indexWheelSubsystem = indexWheelSubsystem;
     m_controller = controller;
+    m_shooterSubsystem = shooter;
     addRequirements(indexWheelSubsystem);
   }
 
@@ -34,10 +37,12 @@ public class CommandRunConveyor extends CommandBase {
   @Override
   public void execute() {
     if (Math.abs(m_controller.getRightT()) > 0.25) {
-      m_indexWheelSubsystem.runHopper(1);
-      m_indexWheelSubsystem.runIndex(1);
+      // if (Math.abs(m_shooterSubsystem.getVelocity()) > 5500.0) {
+        m_indexWheelSubsystem.runHopper(0.25);
+        m_indexWheelSubsystem.runIndex(1);
+      // }
     } else if(Math.abs(m_controller.getLeftT()) > 0.25) {
-      m_indexWheelSubsystem.runHopper(-1);
+      m_indexWheelSubsystem.runHopper(-0.25);
       m_indexWheelSubsystem.runIndex(-1);
     } else {
       m_indexWheelSubsystem.runHopper(0);

@@ -69,7 +69,7 @@ public class ShooterHoodSubsystem extends SubsystemBase {
   }
 
   public boolean getLimitTop() {
-    return !limitTop.get();
+    return false; // !limitTop.get();
   }
 
   public boolean getLimitBottom() {
@@ -123,6 +123,10 @@ public class ShooterHoodSubsystem extends SubsystemBase {
     if (getLimitTop()) {
       //setEncoderAngle(kShooterTopLimitAngle);
       //setTargetAngle(kShooterTopLimitAngle);
+      setEncoderAngle(kShooterTopLimitAngle);
+      if (getTargetAngle() < kShooterTopLimitAngle) {
+        setTargetAngle(kShooterTopLimitAngle);
+      }
     }
     if (getLimitBottom()) {
       setEncoderAngle(kShooterBottomLimitAngle);

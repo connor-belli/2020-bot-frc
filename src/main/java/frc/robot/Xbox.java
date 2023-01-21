@@ -29,7 +29,7 @@ public class Xbox {
   }
 
   public double getRightY() {
-    return Util.clampAbs(0.1, controller.getY(Hand.kRight));
+    return Util.clampAbs(0.03, controller.getY(Hand.kRight));
   }
 
   public double getRightX() {
@@ -37,10 +37,10 @@ public class Xbox {
   }
 
   public double getLeftY() {
-    return Util.clampAbs(0.1, controller.getY(Hand.kLeft));
+    return Util.clampAbs(0.03, controller.getY(Hand.kLeft));
   }
 
   public double getLeftX() {
-    return Util.clampAbs(0.1, controller.getX(Hand.kLeft));
+    return Util.clampAbs(0.03, controller.getX(Hand.kLeft));
   }
 }

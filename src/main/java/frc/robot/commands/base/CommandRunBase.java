@@ -43,6 +43,10 @@ public class CommandRunBase extends CommandBase {
         break;
       default:
         m_base.arcadeDrive(-m_controller.getLeftY(), -m_controller.getRightX());
+        if (m_base.recording) {
+          m_base.steer.add(new Float(-m_controller.getRightX()));
+          m_base.throttle.add(new Float(-m_controller.getLeftY()));
+        }
         break;
     }
   }

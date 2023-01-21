@@ -24,7 +24,7 @@ public class CommandShootAll extends CommandBase {
   public CommandShootAll(IndexWheelSubsystem indexWheelSubsystem, ShooterSubsystem shooterSubsystem, int shots) {
     m_indexWheelSubsystem = indexWheelSubsystem;
     m_shooterSubsystem = shooterSubsystem;
-    addRequirements(m_indexWheelSubsystem, m_shooterSubsystem);
+    addRequirements(m_indexWheelSubsystem);
     this.shots = shots;
     timer = new Timer();
   }
@@ -32,8 +32,6 @@ public class CommandShootAll extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_indexWheelSubsystem.runHopper(1);
-    m_indexWheelSubsystem.runIndex(1);
     timer.reset();
     timer.start();
   }
@@ -41,6 +39,10 @@ public class CommandShootAll extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (Math.abs(m_shooterSubsystem.getVelocity()) > 5500.0) {
+      m_indexWheelSubsystem.runHopper(0.25);
+      m_indexWheelSubsystem.runIndex(1);
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -51,6 +53,6 @@ public class CommandShootAll extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return timer.get() > 4;//m_shooterSubsystem.getShotCount() == shots;
+    return timer.get() > 6;//m_shooterSubsystem.getShotCount() == shots;
   }
 }

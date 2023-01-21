@@ -16,7 +16,8 @@ public class CommandToggleShooter extends InstantCommand {
       if (shooterSubsystem.isRunning()) {
         shooterSubsystem.runShooter(0);
       } else {
-        shooterSubsystem.runShooter(1);
+        shooterSubsystem.runShooter(0.95); //18000
+        // shooterSubsystem.runVelocity(19500);
       }
     }, shooterSubsystem);
   }

@@ -5,49 +5,49 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.turret;
+package frc.robot.commands.base;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Xbox;
-import frc.robot.subsystems.ShooterTurretSubsystem;
+import frc.robot.subsystems.BaseSubsystem;
 
-public class CommandRunTurret extends CommandBase {
+public class CommandRunTime extends CommandBase {
   /**
-   * Creates a new CommandRunTurret.
+   * Creates a new CommandRunTime.
    */
-  private final ShooterTurretSubsystem m_shooterTurretSubsystem;
-  private final Xbox m_controller;
-
-  public CommandRunTurret(ShooterTurretSubsystem shooterTurretSubsystem, Xbox controller) {
-    m_shooterTurretSubsystem = shooterTurretSubsystem;
-    m_controller = controller;
+  private final BaseSubsystem m_baseSubsystem;
+  private final Timer m_timer;
+  private final double m_time;
+  public CommandRunTime(BaseSubsystem baseSubsystem, double time) {
+    m_time = time;
+    m_timer = new Timer();
+    m_baseSubsystem = baseSubsystem;
+    addRequirements(baseSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_shooterTurretSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    m_timer.reset();
+    m_timer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double position = -m_controller.getRightX();
-    SmartDashboard.putNumber("turret target", position);
-    m_shooterTurretSubsystem.setTargetAngle(m_shooterTurretSubsystem.getTargetAngle() + position);
+    m_baseSubsystem.arcadeDrive(-1, 0);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_shooterTurretSubsystem.runTurret(0);
+    m_baseSubsystem.arcadeDrive(0, 0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return m_timer.get() > m_time;
   }
 }

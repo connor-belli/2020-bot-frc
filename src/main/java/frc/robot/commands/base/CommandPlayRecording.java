@@ -5,49 +5,43 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.turret;
+package frc.robot.commands.base;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Xbox;
-import frc.robot.subsystems.ShooterTurretSubsystem;
+import frc.robot.subsystems.BaseSubsystem;
 
-public class CommandRunTurret extends CommandBase {
+public class CommandPlayRecording extends CommandBase {
   /**
-   * Creates a new CommandRunTurret.
+   * Creates a new CommandPlayRecording.
    */
-  private final ShooterTurretSubsystem m_shooterTurretSubsystem;
-  private final Xbox m_controller;
-
-  public CommandRunTurret(ShooterTurretSubsystem shooterTurretSubsystem, Xbox controller) {
-    m_shooterTurretSubsystem = shooterTurretSubsystem;
-    m_controller = controller;
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_shooterTurretSubsystem);
+  int ind = 0;
+  final BaseSubsystem m_baseSubsystem;
+  public CommandPlayRecording(BaseSubsystem baseSubsystem) {
+    m_baseSubsystem = baseSubsystem;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    ind = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double position = -m_controller.getRightX();
-    SmartDashboard.putNumber("turret target", position);
-    m_shooterTurretSubsystem.setTargetAngle(m_shooterTurretSubsystem.getTargetAngle() + position);
+    m_baseSubsystem.arcadeDrive(m_baseSubsystem.throttle.get(ind), m_baseSubsystem.steer.get(ind));
+    ind++;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_shooterTurretSubsystem.runTurret(0);
+    m_baseSubsystem.arcadeDrive(0, 0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return ind >= m_baseSubsystem.steer.size();
   }
 }

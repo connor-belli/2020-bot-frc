@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.BaseSubsystem;
 
@@ -57,12 +58,15 @@ public class CompBaseSubsystem extends BaseSubsystem {
     SmartDashboard.putNumber("i", SmartDashboard.getNumber("i", i));
     SmartDashboard.putNumber("d", SmartDashboard.getNumber("d", d));
     SmartDashboard.putNumber("f", SmartDashboard.getNumber("f", f));
+    ahrs.reset();
+    resetEncoder();
+    resetOdometry(new Pose2d(0, 0, getRotation2d()));
   }
 
   private void setUpMotor(WPI_TalonFX motor) {
-    motor.setNeutralMode(NeutralMode.Coast);
-    motor.configOpenloopRamp(0.5);
-    motor.configClosedloopRamp(0.5);
+  motor.setNeutralMode(NeutralMode.Coast);
+   // motor.configOpenloopRamp(0.5);
+    //motor.configClosedloopRamp(0.5);
   }
 
   public void resetEncoder() {
@@ -82,21 +86,21 @@ public class CompBaseSubsystem extends BaseSubsystem {
   public void tankDrive(double left, double right) {
     super.tankDrive(-left, -right);
   }
-
+  private final double encoderConst = usingHighGear?-31498.031:-83732.3655;
   public double getDistanceLeft() {
-    return motorLeft1.getSensorCollection().getIntegratedSensorPosition();
+    return motorLeft1.getSensorCollection().getIntegratedSensorPosition() / encoderConst;
   }
 
   public double getDistanceRight() {
-    return motorRight1.getSensorCollection().getIntegratedSensorPosition();
+    return -motorRight1.getSensorCollection().getIntegratedSensorPosition() / encoderConst;
   }
 
   public double getVelocityLeft() {
-    return motorLeft1.getSensorCollection().getIntegratedSensorVelocity();
+    return motorLeft1.getSensorCollection().getIntegratedSensorVelocity()*10 / encoderConst;
   }
 
   public double getVelocityRight() {
-    return motorRight1.getSensorCollection().getIntegratedSensorVelocity();
+    return -motorRight1.getSensorCollection().getIntegratedSensorVelocity()*10 / encoderConst;
   }
 
   public void setP(double p) {
@@ -164,5 +168,10 @@ public class CompBaseSubsystem extends BaseSubsystem {
   @Override
   public void toggleShift() {
     solShift.set(!solShift.get());
+  }
+
+  @Override
+  public void setShift(boolean x) {
+    solShift.set(x);
   }
 }

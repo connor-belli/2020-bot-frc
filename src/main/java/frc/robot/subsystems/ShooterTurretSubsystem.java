@@ -63,17 +63,17 @@ public class ShooterTurretSubsystem extends SubsystemBase {
   }
 
   public void setTargetAngle(double angle) {
-    if (angle < kTurretLeftLimitAngle && getLimitLeft()) angle = kTurretLeftLimitAngle;
-    if (angle > kTurretRightLimitAngle && getLimitRight()) angle = kTurretRightLimitAngle;
+    if (angle < kTurretLeftLimitAngle) angle = kTurretLeftLimitAngle;
+    if (angle > kTurretRightLimitAngle) angle = kTurretRightLimitAngle;
     motorTurret.set(ControlMode.Position, degreesToClicks(angle));
   }
 
   public boolean getLimitLeft() {
-    return limitLeft.get();
+    return false;//limitLeft.get();
   }
 
   public boolean getLimitRight() {
-    return limitRight.get();
+    return false; // limitRight.get();
   }
 
   public boolean isInSafezone() {

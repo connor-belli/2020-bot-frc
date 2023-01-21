@@ -12,8 +12,8 @@ public class AutoPickupFromPartner extends SequentialCommandGroup {
                                IndexWheelSubsystem indexWheelSubsystem,
                                LimeLightSubsystem limeLightSubsystem,
                                IntakeSubsystem intakeSubsystem) {
-    super(new AutoShoot(shooterSubsystem, shooterHoodSubsystem, shooterTurretSubsystem, indexWheelSubsystem, limeLightSubsystem, 3),
+    super(new AutoShoot(shooterSubsystem, shooterHoodSubsystem, shooterTurretSubsystem, indexWheelSubsystem, intakeSubsystem, limeLightSubsystem, 3),
             new CommandDriveDistance(baseSubsystem, -4),
-            new AutoShoot(shooterSubsystem, shooterHoodSubsystem, shooterTurretSubsystem, indexWheelSubsystem, limeLightSubsystem, 3));
+            new AutoShoot(shooterSubsystem, shooterHoodSubsystem, shooterTurretSubsystem, indexWheelSubsystem, intakeSubsystem, limeLightSubsystem, 3));
   }
 }

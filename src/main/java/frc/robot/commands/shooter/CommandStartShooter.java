@@ -13,7 +13,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class CommandStartShooter extends InstantCommand {
   public CommandStartShooter(ShooterSubsystem shooterSubsystem) {
     super(() -> {
-      shooterSubsystem.runShooter(1);
+      shooterSubsystem.runShooter(0.95);
     }, shooterSubsystem);
   }
 }
